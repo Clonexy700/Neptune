@@ -62,6 +62,16 @@ client.on('message', (msg) => {
     fs.writeFile('storage/userdata.json', JSON.stringify(userdata), (err) => {
         if (err) console.error(err);
     });
+
+    if (msg.content === (prefix + 'stats')) {
+        const embed = new Discord.MessageEmbed()
+        .addField('Nep stats', `${msg.author} Your experience amount is: **${userdata[msg.author.id].exp}**`)
+        .setFooter('(´｡• ω •｡`)')
+        .setThumbnail(msg.author.displayAvatarURL())
+        .setTimestamp(msg.createdAt)
+        .setColor('#5b5ddf')
+        msg.channel.send(embed)
+    }
     
     if (msg.content === (prefix + 'nep')) {
         const embed = new Discord.MessageEmbed()
