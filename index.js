@@ -1,8 +1,10 @@
-const Discord = require('discord.js')
-
+const Discord = require('discord.js');
+const fs = require('fs');
 const client = new Discord.Client();
 
-let config = require('./config.json'); 
+const userdata = JSON.parse(fs.readFileSync('storage/userdata.json', 'utf8'));
+
+let config = require('storage/config.json'); 
 
 let token = config.token; 
 let prefix = config.prefix;
@@ -50,6 +52,16 @@ client.on('message', (msg) => {
     if (!msg.guild) return;
     if (msg.author.bot) return;
     if (!msg.content.startsWith(prefix)) return;
+
+    if (!userdata[sender.id]) userdata[sender.id] = {
+        messagesSent: 0
+    }
+
+    userdata[sender.id].messagesSent++;
+
+    fs.writeFile('storage/userdata.json', JSON.stringify(userdata), (err) => {
+        if (err) console.error(err);
+    });
     
     if (msg.content === (prefix + 'nep')) {
         const embed = new Discord.MessageEmbed()
