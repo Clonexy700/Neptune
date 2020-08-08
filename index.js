@@ -4,7 +4,7 @@ const client = new Discord.Client();
 
 const userdata = JSON.parse(fs.readFileSync('storage/userdata.json', 'utf8'));
 
-let config = require('storage/config.json'); 
+let config = require('./config.json'); 
 
 let token = config.token; 
 let prefix = config.prefix;
@@ -53,11 +53,11 @@ client.on('message', (msg) => {
     if (msg.author.bot) return;
     if (!msg.content.startsWith(prefix)) return;
 
-    if (!userdata[sender.id]) userdata[sender.id] = {
-        messagesSent: 0
+    if (!userdata[msg.author.id]) userdata[msg.author.id] = {
+        exp: 0
     }
 
-    userdata[sender.id].messagesSent++;
+    userdata[msg.author.id].exp++;
 
     fs.writeFile('storage/userdata.json', JSON.stringify(userdata), (err) => {
         if (err) console.error(err);
