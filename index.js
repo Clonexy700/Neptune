@@ -4,10 +4,31 @@ const client = new Discord.Client();
 
 const userdata = JSON.parse(fs.readFileSync('storage/userdata.json', 'utf8'));
 
-let config = require('./config.json'); 
+client.commands = new Discord.Collection();
 
-let token = config.token; 
-let prefix = config.prefix;
+function loadCmds() {
+fs.readdir('./commands/', (err, files) => {
+    if(err) console.error(err);
+    
+    var jsfiles = files.filter(f => f.split('.').pop() === 'js');
+    if (jsfiles.length <= 0) {return console.log('No commands found, Nep')}
+    else {console.log(jsfiles.length + 'commands found')}
+
+    jsfiles.forEach((f, i) => {
+        delete require.cache[require.resolve(`./commands/${f}`)];
+        var cmds = require(`./commands/${f}`);
+        console.log(`Command ${f} loading...`)
+        client.commands.set(cmds.config.command, cmds);
+
+    })
+})
+
+}
+
+let configuration = require('./config.json'); 
+
+let token = configuration.token; 
+let prefix = configuration.prefix;
 
 const actvs = [
     "nep help",
@@ -46,8 +67,12 @@ client.on('guildMemberAdd', member => {
     channel.send(embed)
   });
 
+loadCmds()
 
 client.on('message', (msg) => {
+
+    var cont = msg.content.slice(prefix.length).split(" ");
+    var args = cont.slice(1);
 
     if (!msg.guild) return;
     if (msg.author.bot) return;
@@ -56,6 +81,18 @@ client.on('message', (msg) => {
     if (!userdata[msg.author.id]) userdata[msg.author.id] = {
         exp: 0
     }
+
+    var cmd = client.commands.get(cont[0])
+    if (cmd) cmd.run(client, msg, args);
+    
+    if (msg.content === (prefix + 'reload')) {
+        loadCmds()
+        const embed = new Discord.MessageEmbed()
+        .setColor('#5b5ddf')
+        .setDescription('``All commands are reloaded``')
+        msg.channel.send(embed)
+    }
+
 
     userdata[msg.author.id].exp++;
 
@@ -88,59 +125,6 @@ client.on('message', (msg) => {
         .addField('MIMI', 'Zeronya love lolies', false)
         .setColor('#5b5ddf')
         msg.channel.send(embed)
-    }
-
-    if (msg.content === (prefix + 'info')) {
-        var finalString = '';
-        var user = msg.author;
-        var userCreated = user.createdAt.toString().split(' ');
-        const embed = new Discord.MessageEmbed()
-        .addField(`${user.username}'s information`, `${user.tag}`)
-        .addField(`Presence`, `${user.presence.status}`)
-        .addField('Account created:\n ', `${userCreated[1]}, ${userCreated[2]}d  ${userCreated[3]}y, ${userCreated[4]}`)
-        .setFooter(`ID: ${user.id}\n ｡^‿^｡`)
-        .setTimestamp(msg.createdAt)
-        .setColor('#5d5ddf')
-        msg.channel.send(embed)
-    }
-
-    if (msg.content === (prefix + 'alicard')) {
-        const embed  = new Discord.MessageEmbed()
-        .addField('Nep nep!', '``He is perv and lewding lolies >.<``', false)
-        .setColor('#f53127')
-        .setImage('https://cdn.discordapp.com/attachments/607250459622768640/740811878418219100/satan.png')
-        msg.channel .send(embed)
-    }
-
-    if (msg.content === (prefix + 'ping')) {
-        const embed = new Discord.MessageEmbed()
-        .setColor('#5b5ddf')
-        .setDescription("Nep! Ping: ``" + Math.round(client.ws.ping) + "`` ms")
-        msg.channel.send(embed)
-    }
-
-    if (msg.content === (prefix + 'carrot')) {
-        const embed = new Discord.MessageEmbed()
-        .setColor('#5b5ddf')
-        .setImage('https://cdn.discordapp.com/attachments/581531385639206935/740827197132242954/3099b51e40f0f8fd.gif')
-        msg.channel.send(embed)
-    }
-
-    if (msg.content.startsWith(prefix + 'avatar')) {
-        const user = msg.mentions.users.first();
-        if (user === undefined) {
-            const embed = new Discord.MessageEmbed()
-            .addField('Nep nep!', `${msg.author.username}'s avatar`, false)
-            .setImage(msg.author.displayAvatarURL())
-            .setColor('#5b5ddf')
-            msg.channel.send(embed)
-        } else {
-            const embed = new Discord.MessageEmbed()
-            .addField('Nep nep!', `${user.username}'s avatar`, false)
-            .setImage(user.displayAvatarURL())
-            .setColor('#5b5ddf')
-            msg.channel.send(embed)
-        }
     }
 });
 
