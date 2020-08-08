@@ -76,11 +76,18 @@ client.on('message', (msg) => {
 
     if (!msg.guild) return;
     if (msg.author.bot) return;
-    if (!msg.content.startsWith(prefix)) return;
 
-    if (!userdata[msg.author.id]) userdata[msg.author.id] = {
+    if (!userdata[msg.author.id + msg.guild.id]) userdata[msg.author.id + msg.guild.id] = {
         exp: 0
     }
+
+    userdata[msg.author.id + msg.guild.id].exp++;
+
+    fs.writeFile('storage/userdata.json', JSON.stringify(userdata), (err) => {
+        if (err) console.error(err);
+    });
+
+    if (!msg.content.startsWith(prefix)) return;
 
     var cmd = client.commands.get(cont[0])
     if (cmd) cmd.run(client, msg, args);
@@ -92,13 +99,6 @@ client.on('message', (msg) => {
         .setDescription('``All commands are reloaded``')
         msg.channel.send(embed)
     }
-
-
-    userdata[msg.author.id].exp++;
-
-    fs.writeFile('storage/userdata.json', JSON.stringify(userdata), (err) => {
-        if (err) console.error(err);
-    });
 
     if (msg.content === (prefix + 'stats')) {
         const embed = new Discord.MessageEmbed()
