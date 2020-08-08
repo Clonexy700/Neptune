@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 
 const client = new Discord.Client();
 
-let config = require('./botconfig.json'); 
+let config = require('./config.json'); 
 
 let token = config.token; 
 let prefix = config.prefix;
@@ -21,8 +21,6 @@ client.on('ready', () => {
         client.user.setActivity(actvs[Math.floor(Math.random() * (actvs.length - 1) + 1)]);
     }, 10000);
 });
-
-var prefix = "nep "
 
 client.on('guildMemberAdd', member => {
     const channel = member.guild.channels.cache.find(ch => ch.name === 'welcome');
