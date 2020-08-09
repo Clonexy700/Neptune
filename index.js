@@ -79,18 +79,10 @@ client.on('message', (msg) => {
     if (!msg.guild) return;
     if (msg.author.bot) return;
 
-    if (!moneydata[msg.author.id]) moneydata[msg.author.id] = {}
-    if (!moneydata[msg.author.id].money) moneydata[msg.author.id].money = 1000;
-
-    
-    fs.writeFile('storage/moneydata.json', JSON.stringify(userdata), (err) => {
-        if (err) console.error(err);
-    })
-
     if (!userdata[msg.author.id]) userdata[msg.author.id] = {}
-    if (!userdata[msg.author.id].exp) userdata[msg.author.id].exp = 0;
+    if (!userdata[msg.author.id].msgsent) userdata[msg.author.id].msgsent = 0;
 
-    userdata[msg.author.id].exp++;
+    userdata[msg.author.id].msgsent++;
 
     fs.writeFile('storage/userdata.json', JSON.stringify(userdata), (err) => {
         if (err) console.error(err);
@@ -109,27 +101,6 @@ client.on('message', (msg) => {
         msg.channel.send(embed)
     }
 
-    if (msg.content === (prefix + 'money')||(prefix + 'balance')){
-        const embed = new Discord.MessageEmbed()
-        .setTitle('Nep balance')
-        .addField('Account:', `${msg.author}`, true)
-        .addField('Balance:', `${moneydata[msg.author.id].money}`, true)
-        .setFooter('∩˙▿˙∩')
-        .setThumbnail('https://cdn.discordapp.com/attachments/621005423335702528/676802134875832350/doesnt_need_money_mokou.png')
-        .setTimestamp(msg.createdAt)
-        .setColor('#5b5ddf')
-        msg.channel.send(embed)
-    }
-
-    if (msg.content === (prefix + 'stats')) {
-        const embed = new Discord.MessageEmbed()
-        .addField('Nep stats', `${msg.author} Your experience amount is: **${userdata[msg.author.id].exp}**`)
-        .setFooter('(´｡• ω •｡`)')
-        .setThumbnail(msg.author.displayAvatarURL())
-        .setTimestamp(msg.createdAt)
-        .setColor('#5b5ddf')
-        msg.channel.send(embed)
-    }
 
 });
 
