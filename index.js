@@ -4,6 +4,8 @@ const client = new Discord.Client();
 
 const userdata = JSON.parse(fs.readFileSync('storage/userdata.json', 'utf8'));
 
+const moneydata = JSON.parse(fs.readFileSync('storage/moneydata.json', 'utf8'));
+
 client.commands = new Discord.Collection();
 
 function loadCmds() {
@@ -77,11 +79,18 @@ client.on('message', (msg) => {
     if (!msg.guild) return;
     if (msg.author.bot) return;
 
-    if (!userdata[msg.author.id + msg.guild.id]) userdata[msg.author.id + msg.guild.id] = {
-        exp: 0
-    }
+    if (!moneydata[msg.author.id]) moneydata[msg.author.id] = {}
+    if (!moneydata[msg.author.id].money) moneydata[msg.author.id].money = 1000;
 
-    userdata[msg.author.id + msg.guild.id].exp++;
+    
+    fs.writeFile('storage/moneydata.json', JSON.stringify(userdata), (err) => {
+        if (err) console.error(err);
+    })
+
+    if (!userdata[msg.author.id]) userdata[msg.author.id] = {}
+    if (!userdata[msg.author.id].exp) userdata[msg.author.id].exp = 0;
+
+    userdata[msg.author.id].exp++;
 
     fs.writeFile('storage/userdata.json', JSON.stringify(userdata), (err) => {
         if (err) console.error(err);
@@ -100,6 +109,18 @@ client.on('message', (msg) => {
         msg.channel.send(embed)
     }
 
+    if (msg.content === (prefix + 'money')||(prefix + 'balance')){
+        const embed = new Discord.MessageEmbed()
+        .setTitle('Nep balance')
+        .addField('Account:', `${msg.author}`, true)
+        .addField('Balance:', `${moneydata[msg.author.id].money}`, true)
+        .setFooter('∩˙▿˙∩')
+        .setThumbnail('https://cdn.discordapp.com/attachments/621005423335702528/676802134875832350/doesnt_need_money_mokou.png')
+        .setTimestamp(msg.createdAt)
+        .setColor('#5b5ddf')
+        msg.channel.send(embed)
+    }
+
     if (msg.content === (prefix + 'stats')) {
         const embed = new Discord.MessageEmbed()
         .addField('Nep stats', `${msg.author} Your experience amount is: **${userdata[msg.author.id].exp}**`)
@@ -109,23 +130,7 @@ client.on('message', (msg) => {
         .setColor('#5b5ddf')
         msg.channel.send(embed)
     }
-    
-    if (msg.content === (prefix + 'nep')) {
-        const embed = new Discord.MessageEmbed()
-        .setDescription(`Nep nep! ${msg.author}`)
-        .setColor('#5b5ddf')
-        msg.channel.send(embed)
 
-    }
-
-    if (msg.content === (prefix + 'embedtest')) {
-        const embed = new Discord.MessageEmbed()
-        .setTitle('This is title')
-        .setDescription('This is the description field')
-        .addField('MIMI', 'Zeronya love lolies', false)
-        .setColor('#5b5ddf')
-        msg.channel.send(embed)
-    }
 });
 
 client.login(token);
