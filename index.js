@@ -111,19 +111,20 @@ client.on('message', (msg) => {
     }
 
     if (msg.content === (prefix + 'daily')) {
+        const credit_emoji = client.emojis.cache.get("741939356003991562")
         if (moneydata[msg.author.id].lastDaily != moment().format('L')) {
             moneydata[msg.author.id].lastDaily = moment().format('L')
             moneydata[msg.author.id].money += 500;
             msg.channel.send({embed:{
                 title:"Daily reward",
-                description:"You got +500 added to your account!",
+                description:`+500 ${credit_emoji} added to your account!`,
                 color:'#5b5ddf'
             }})
 
         } else {
             msg.channel.send({embed:{
                 title:"Daily reward",
-                description:"You already collected your daily reward!You can collect your next reward " + moment().endOf('day').fromNow() + '.',
+                description:`You already collected your daily reward ${credit_emoji}!You can collect your next reward ` + moment().endOf('day').fromNow() + '.',
                 color:'#5b5ddf'
             }})
         }
@@ -133,10 +134,11 @@ client.on('message', (msg) => {
     }
 
     if (msg.content === (prefix + 'money')) {
+        const credit_emoji = client.emojis.cache.get("741939356003991562")
         const embed = new Discord.MessageEmbed()
         .setTitle('Nep nep!')
         .addField('Account:', `${msg.author}`, true)
-        .addField('Balance:', `${moneydata[msg.author.id].money}`, true)
+        .addField('Balance:', `${moneydata[msg.author.id].money} ${credit_emoji}`, true)
         .setFooter('∩˙▿˙∩')
         .setThumbnail('https://cdn.discordapp.com/attachments/621005423335702528/676802134875832350/doesnt_need_money_mokou.png')
         .setTimestamp(msg.createdAt)
