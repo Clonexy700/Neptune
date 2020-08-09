@@ -7,6 +7,7 @@ module.exports.run = async(client, msg, args) => {
     var userCreated = user.createdAt.toString().split(' ');
     const embed = new Discord.MessageEmbed()
     .addField(`${user.username}'s information`, `${user.tag}`)
+    .setThumbnail(`${msg.author.displayAvatarURL()}`)
     .addField(`Presence`, `${user.presence.status}`)
     .addField('Account created:\n ', `${userCreated[1]}, ${userCreated[2]}d  ${userCreated[3]}y, ${userCreated[4]}`)
     .setFooter(`ID: ${user.id}\n ｡^‿^｡`)

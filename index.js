@@ -85,6 +85,7 @@ client.on('message', (msg) => {
     if (!moneydata[msg.author.id]) moneydata[msg.author.id] = {}
     if (!moneydata[msg.author.id].money) moneydata[msg.author.id].money = 1000;
     if (!moneydata[msg.author.id].lastDaily) moneydata[msg.author.id].lastDaily = 'Not Collected';
+    if (!moneydata[msg.author.id].username) moneydata[msg.author.id].username = msg.author.username;
 
 
     userdata[msg.author.id].msgsent++;
@@ -144,6 +145,22 @@ client.on('message', (msg) => {
         .setTimestamp(msg.createdAt)
         .setColor('#5b5ddf')
         msg.channel.send(embed)
+    }
+
+    if (msg.content === (prefix + 'topmoney')) {
+        var globalmoney = 0;
+        var globalusers = 0;
+        var globalrichest = '';
+        var globalrichestcred = 0;
+        
+        for (var i in moneydata) {
+            globalmoney += moneydata[i].money;
+            globalusers += 1;
+            if (moneydata[i].money > globalrichestcred) {
+                globalrichestcred = moneydata[i].money
+                globalrichest = moneydata[i].username
+            }
+        }
     }
 
     
