@@ -1,8 +1,8 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+const moneydata = JSON.parse(fs.readFileSync('./storage/moneydata.json', 'utf8'));
 module.exports.run = async(client, msg, args) => {
 
-    const moneydata = JSON.parse(fs.readFileSync('./storage/moneydata.json', 'utf8'));
         const embed = new Discord.MessageEmbed()
         .setTitle('Nep nep!')
         .addField('Account:', `${msg.author}`, true)

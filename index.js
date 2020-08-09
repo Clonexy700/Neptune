@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const client = new Discord.Client();
+const moment = require('moment');
 
 const userdata = JSON.parse(fs.readFileSync('storage/userdata.json', 'utf8'));
 
@@ -81,10 +82,18 @@ client.on('message', (msg) => {
 
     if (!userdata[msg.author.id]) userdata[msg.author.id] = {}
     if (!userdata[msg.author.id].msgsent) userdata[msg.author.id].msgsent = 0;
+    if (!moneydata[msg.author.id]) moneydata[msg.author.id] = {}
+    if (!moneydata[msg.author.id].money) moneydata[msg.author.id].money = 1000;
+    if (!moneydata[msg.author.id].lastDaily) moneydata[msg.author.id].lastDaily = 'Not Collected';
+
 
     userdata[msg.author.id].msgsent++;
 
     fs.writeFile('storage/userdata.json', JSON.stringify(userdata), (err) => {
+        if (err) console.error(err);
+    });
+
+    fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
         if (err) console.error(err);
     });
 
@@ -100,6 +109,30 @@ client.on('message', (msg) => {
         .setDescription('``All commands are reloaded``')
         msg.channel.send(embed)
     }
+
+    if (msg.content === (prefix + 'daily')) {
+        if (moneydata[msg.author.id].lastDaily != moment().format('L')) {
+            moneydata[msg.author.id].lastDaily != moment().format('L')
+            moneydata[msg.author.id].money += 500;
+            msg.channel.send({embed:{
+                title:"Daily reward",
+                description:"You got +500 added to your account!",
+                color:'#5b5ddf'
+            }})
+
+        } else {
+            msg.channel.send({embed:{
+                title:"Daily reward",
+                description:"You already collected your daily reward!You can collect your next reward" + moment().endOf('day').fromNow() + '.',
+                color:'#5b5ddf'
+            }})
+        }
+        fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
+            if (err) console.error(err);
+        });
+    }
+
+    
 
 
 });
