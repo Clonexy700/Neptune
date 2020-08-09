@@ -112,7 +112,7 @@ client.on('message', (msg) => {
 
     if (msg.content === (prefix + 'daily')) {
         if (moneydata[msg.author.id].lastDaily != moment().format('L')) {
-            moneydata[msg.author.id].lastDaily != moment().format('L')
+            moneydata[msg.author.id].lastDaily = moment().format('L')
             moneydata[msg.author.id].money += 500;
             msg.channel.send({embed:{
                 title:"Daily reward",
@@ -123,13 +123,25 @@ client.on('message', (msg) => {
         } else {
             msg.channel.send({embed:{
                 title:"Daily reward",
-                description:"You already collected your daily reward!You can collect your next reward" + moment().endOf('day').fromNow() + '.',
+                description:"You already collected your daily reward!You can collect your next reward " + moment().endOf('day').fromNow() + '.',
                 color:'#5b5ddf'
             }})
         }
         fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
             if (err) console.error(err);
         });
+    }
+
+    if (msg.content === (prefix + 'money')) {
+        const embed = new Discord.MessageEmbed()
+        .setTitle('Nep nep!')
+        .addField('Account:', `${msg.author}`, true)
+        .addField('Balance:', `${moneydata[msg.author.id].money}`, true)
+        .setFooter('∩˙▿˙∩')
+        .setThumbnail('https://cdn.discordapp.com/attachments/621005423335702528/676802134875832350/doesnt_need_money_mokou.png')
+        .setTimestamp(msg.createdAt)
+        .setColor('#5b5ddf')
+        msg.channel.send(embed)
     }
 
     
