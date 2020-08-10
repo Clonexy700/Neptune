@@ -1,4 +1,4 @@
 config.json
-./storage/userdata.json
-./storage/moneydata.json
 node_modules
+storage/moneydata.json
+storage/userdata.json
