@@ -148,6 +148,8 @@ client.on('message', (msg) => {
     }
 
     if (msg.content === (prefix + 'topmoney')) {
+        const credit_emoji = client.emojis.cache.get("741939356003991562")
+        const shock_nep = client.emojis.cache.get("741945536202145852")
         var globalmoney = 0;
         var globalusers = 0;
         var globalrichest = '';
@@ -157,10 +159,29 @@ client.on('message', (msg) => {
             globalmoney += moneydata[i].money;
             globalusers += 1;
             if (moneydata[i].money > globalrichestcred) {
-                globalrichestcred = moneydata[i].money
-                globalrichest = moneydata[i].username
+                globalrichestcred = moneydata[i].money;
+                globalrichest = moneydata[i].username;
             }
         }
+
+        msg.channel.send({embed:{
+            title:"Nep nep",
+            color:'#5b5ddf',
+            fields:[{
+                name: "Accounts",
+                value:globalusers,
+                inline:true
+            },
+            {
+                name: "Total Money",
+                value: `globalmoney ${credit_emoji}`,
+                inline: true
+            },
+            {
+                name: "Richest account",
+                value:`${globalrichest} ${shock_nep} with ${globalrichestcred} ${credit_emoji}`
+            }]
+        }})
     }
 
     
