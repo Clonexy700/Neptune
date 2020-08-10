@@ -1,12 +1,137 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+const commandshelp = JSON.parse(fs.readFileSync('./storage/commands.json', 'utf8'));
+let configuration = require('../config.json'); 
+let prefix = configuration.prefix;
 module.exports.run = async(client, msg, args) => {
-    const credit_emoji = client.emojis.cache.get("741939356003991562")
-    const embed = new Discord.MessageEmbed()
-    .setDescription("**Help menu**\nNep nep! This is a list of my commands.\n :map: **Info**\n •``info`` •``ping`` •``avatar``\n :laughing: **Funny**\n •``alicard`` •``carrot``\n :moneybag: **Economics**\n •``money`` •``daily`` •``topmoney``")
-    .setColor('#5b5ddf')
-    msg.channel.send(embed)
+
+    if (msg.content === `${prefix}help`) { 
+
+
+        let groups = '';
+
+        for (var cmd in commandshelp) {
+            if (!groups.includes(commandshelp[cmd].group)) {
+                groups += `${commandshelp[cmd].group}\n`
+            }
+        }
+
+        const embed = new Discord.MessageEmbed()
+        .setColor('#5b5ddf')
+        .setDescription(`**${groups}**`)
+        .setTitle('Groups')
+        .setFooter(`Currently showing groups. To view group commands or command do\n ${prefix}help [group / command]`)
+        msg.channel.send(embed)
+
+
+    } else if (args.join(" ").toLowerCase() === 'groups') {
+
+      
+        let groups = '';
+
+        for (var cmd in commandshelp) {
+            if (!groups.includes(commandshelp[cmd].group)) {
+                groups += `${commandshelp[cmd].group}\n`
+            }
+        }
+        
+        const embed = new Discord.MessageEmbed()
+        .setColor('#5b5ddf')
+        .setDescription(`**${groups}**`)
+        .setTitle('Groups')
+        .setFooter(`Currently showing groups. To view group commands or command do\n ${prefix}help [group / command]`)
+        msg.channel.send(embed)
+
+        return; 
+
+
+    } else {
+
+        let groupFound = '';
+
+        for (var cmd in commandshelp) { 
+
+            if (args.join(" ").trim().toLowerCase() === commandshelp[cmd].group.toLowerCase()) {
+                groupFound = commandshelp[cmd].group.toLowerCase();
+                break;
+            }
+
+        }
+
+        if (groupFound != '') { 
+
+           
+            const embed = new Discord.MessageEmbed()
+                .setColor('#5b5ddf') 
+
+         
+            let commandsFound = 0;
+
+
+            for (var cmd in commandshelp) {
+
+               
+                if (commandshelp[cmd].group.toLowerCase() === groupFound) {
+                    
+                    commandsFound++
+                    
+                    embed.addField(`${commandshelp[cmd].name}`, `**Description:**\`\`${commandshelp[cmd].desc}\`\`\n**Usage:**\`\`${prefix + commandshelp[cmd].usage}\`\``);
+                }
+
+            }
+
+            embed.setFooter(`Currently showing ${groupFound} commands. To view another group do\n ${prefix}help [group / command]`)
+            embed.setDescription(`**${commandsFound} commands found** - <> means required, [] means optional`)
+
+            msg.channel.send({embed})
+
+
+            return; 
+        }
+
+
+        let commandFound = '';
+        let commandDesc = '';
+        let commandUsage = '';
+        let commandGroup = '';
+
+        for (var cmd in commandshelp) { 
+
+            if (args.join(" ").trim().toLowerCase() === commandshelp[cmd].name.toLowerCase()) {
+                commandFound = commandshelp[cmd].name; 
+                commandDesc = commandshelp[cmd].desc;
+                commandUsage = commandshelp[cmd].usage;
+                commandGroup = commandshelp[cmd].group;
+                break;
+            }
+
+        }
+
+        
+        if (commandFound === '') {
+            msg.channel.send({embed: {
+                description:`**No group or command found titled \`${args.join(" ")}\`**`,
+                color: '#5b5ddf',
+            }})
+
+        }
+
+        
+        msg.channel.send({embed: {
+            title:'<> means required, [] means optional',
+            color: '#5b5ddf',
+            fields: [{
+                name:commandFound,
+                value:`**Description:**\`\`${commandDesc}\`\`\n**Usage:**\`\`${commandUsage}\`\`\n**Group:**\`\`${commandGroup}\`\``
+            }]
+        }})
+
+        return; 
+
+    }
+
 }
+
 
 module.exports.config = {
     command: "help"

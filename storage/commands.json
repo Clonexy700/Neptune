@@ -1,0 +1,56 @@
+{
+    "Help": {
+        "name": "Help",
+        "group": "Information",
+        "desc": "Displays a list of commands.",
+        "usage": "help [group OR command]"
+    },
+    "Info": {
+        "name": "Info",
+        "group": "Information",
+        "desc": "Returns user information.",
+        "usage": "info"
+    },
+    "Ping": {
+        "name": "Ping",
+        "group": "Information",
+        "desc": "Returns the ping to channel.",
+        "usage": "help [group OR command]"
+    },
+    "Avatar": {
+        "name": "Avatar",
+        "group": "Information",
+        "desc": "Return user's avatar to channel.",
+        "usage": "avatar [@user]"
+    },
+    "Alicard": {
+        "name": "Alicard",
+        "group": "Fun",
+        "desc": "Sends some memes about Alicard's person",
+        "usage": "alicard"
+    },
+    "Carrot": {
+        "name": "Carrot",
+        "group": "Fun",
+        "desc": "Sends AmiyaCarrot gif",
+        "usage": "carrot"
+    },
+    "Money": {
+        "name": "Money",
+        "group": "Economics",
+        "desc": "Displays aссount money amount.",
+        "usage": "money"
+    },
+    "Daily": {
+        "name": "Daily",
+        "group": "Economics",
+        "desc": "Daily money reward.",
+        "usage": "daily"
+    },
+    "Moneytop": {
+        "name": "Moneytop",
+        "group": "Economics",
+        "desc": "Sends global money top.",
+        "usage": "moneytop"
+    }
+}

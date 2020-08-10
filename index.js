@@ -4,7 +4,7 @@ const client = new Discord.Client();
 const moment = require('moment');
 
 const userdata = JSON.parse(fs.readFileSync('storage/userdata.json', 'utf8'));
-
+const commandshelp = JSON.parse(fs.readFileSync('storage/commands.json', 'utf8'));
 const moneydata = JSON.parse(fs.readFileSync('storage/moneydata.json', 'utf8'));
 
 client.commands = new Discord.Collection();
