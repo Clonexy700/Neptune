@@ -74,6 +74,7 @@ loadCmds()
 
 client.on('message', (msg) => {
 
+
     var cont = msg.content.slice(prefix.length).split(" ");
     var args = cont.slice(1);
 
@@ -115,7 +116,7 @@ client.on('message', (msg) => {
         const credit_emoji = client.emojis.cache.get("741939356003991562")
         if (moneydata[msg.author.id].lastDaily != moment().format('L')) {
             moneydata[msg.author.id].lastDaily = moment().format('L')
-            moneydata[msg.author.id].money += 500;
+            moneydata[msg.author.id].money += Number(500);
             msg.channel.send({embed:{
                 title:"Daily reward",
                 description:`+500 ${credit_emoji} added to your account!`,
@@ -134,21 +135,36 @@ client.on('message', (msg) => {
         });
     }
 
-    if (msg.content === (prefix + 'money')) {
-        const credit_emoji = client.emojis.cache.get("741939356003991562")
-        const embed = new Discord.MessageEmbed()
-        .setTitle('Nep nep!')
-        .addField('Account:', `${msg.author}`, true)
-        .addField('Balance:', `${moneydata[msg.author.id].money} ${credit_emoji}`, true)
-        .setFooter('∩˙▿˙∩')
-        .setThumbnail('https://cdn.discordapp.com/attachments/621005423335702528/676802134875832350/doesnt_need_money_mokou.png')
-        .setTimestamp(msg.createdAt)
-        .setColor('#5b5ddf')
-        msg.channel.send(embed)
+    if (msg.content.startsWith (prefix + 'money')) {
+        let user = msg.mentions.users.first();
+        if (user === undefined) {
+            const user = msg.author
+            const credit_emoji = client.emojis.cache.get("741939356003991562")
+            const embed = new Discord.MessageEmbed()
+            .setTitle('Nep nep!')
+            .addField('Account:', `${user}`, true)
+            .addField('Balance:', `${moneydata[user.id].money} ${credit_emoji}`, true)
+            .setFooter('∩˙▿˙∩')
+            .setThumbnail('https://cdn.discordapp.com/attachments/621005423335702528/676802134875832350/doesnt_need_money_mokou.png')
+            .setTimestamp(msg.createdAt)
+            .setColor('#5b5ddf')
+            msg.channel.send(embed)
+        }  else {
+            const credit_emoji = client.emojis.cache.get("741939356003991562")
+            const embed = new Discord.MessageEmbed()
+            .setTitle('Nep nep!')
+            .addField('Account:', `${user}`, true)
+            .addField('Balance:', `${moneydata[user.id].money} ${credit_emoji}`, true)
+            .setFooter('∩˙▿˙∩')
+            .setThumbnail('https://cdn.discordapp.com/attachments/621005423335702528/676802134875832350/doesnt_need_money_mokou.png')
+            .setTimestamp(msg.createdAt)
+            .setColor('#5b5ddf')
+            msg.channel.send(embed)
+        }
     }
 
     if (msg.content === (prefix + 'topmoney')) {
-        const credit_emoji = client.emojis.cache.get("741939356003991562")
+        const credit_emoji = client.emojis.cache.get("741939356003991562");
         const shock_nep = client.emojis.cache.get("741945536202145852")
         var globalmoney = 0;
         var globalusers = 0;
@@ -184,8 +200,57 @@ client.on('message', (msg) => {
         }})
     }
 
-    
+    if (msg.content.startsWith(prefix + 'give')) {
+        const checker = moneydata[msg.author.id].money;
+        let user = msg.mentions.users.first();
+        if (user === undefined) {
+            msg.channel.send({embed:{
+                title:"error",
+                description:`You must define person who you send money!`,
+                color:'#ff0000'
+            }})
+        }
+        const credit_emoji = client.emojis.cache.get("741939356003991562")
+         
+        if (!args[1]) {
+            msg.channel.send({embed:{
+                title:"error",
+                description:`You must define amount of ${credit_emoji}!`,
+                color:'#ff0000'
+            }})
+        }
 
+        if (isNaN(Number(args[1]))) {
+            msg.channel.send({embed:{
+                title:"error",
+                description:`Your amount of ${credit_emoji} must be number!`,
+                color:'#ff0000'
+            }})
+        }
+        if (!isNaN(Number(args[1])))  {
+            const checker_final = (checker - Number(args[1]));
+            if (checker_final > 0) {
+                moneydata[msg.author.id].money -= Number(args[1]);
+                moneydata[user.id].money += Number(args[1]);
+                msg.channel.send({embed:{
+                    title:"Money operation, nep",
+                    description:`${msg.author.username} sent ${args[1]} ${credit_emoji} to ${user.username}`,
+                    color:'#5b5ddf'
+                }})
+                fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
+                    if (err) console.error(err);
+                });
+            } else {
+                msg.channel.send({embed:{
+                    title:"error",
+                    description:`Not enough amount of ${credit_emoji}!\nyour balance can't be 0 or numbers below`,
+                    color:'#ff0000'
+                }})
+            }
+
+        }
+
+    }
 
 });
 

@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 module.exports.run = async(client, msg, args) => {
 
-    const user = msg.mentions.users.first();
+    let user = msg.mentions.users.first();
     if (user === undefined) {
         const embed = new Discord.MessageEmbed()
         .addField('Nep nep!', `${msg.author.username}'s avatar`, false)

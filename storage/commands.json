@@ -39,7 +39,7 @@
         "name": "Money",
         "group": "Economics",
         "desc": "Displays aссount money amount.",
-        "usage": "money"
+        "usage": "money [@user]"
     },
     "Daily": {
         "name": "Daily",
@@ -52,5 +52,11 @@
         "group": "Economics",
         "desc": "Sends global money top.",
         "usage": "moneytop"
+    },
+    "Give": {
+        "name": "Give",
+        "group": "Economics",
+        "desc": "Sends message author's credit amount to defined user.",
+        "usage": "give <@user> <amount>"
     }
 }
