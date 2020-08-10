@@ -21,7 +21,7 @@ module.exports.run = async(client, msg, args) => {
     }
     if (question != "") {
         const embed = new Discord.MessageEmbed()
-        .addField('Neptune\'s 8ball', `Your question is: \`\`${question}\`\`\n Neptune's answer is: **${doMagic8BallVoodoo()}**${easter_egg}`)
+        .addField('Neptune\'s 8ball', `Your question is: \`\`${question}\`\`\n Neptune's answer is: **${doMagic8BallVoodoo()}** ${easter_egg}`)
         .setImage(doMagicTrickyNeptunesImages())
         .setFooter(`°˖✧◝(⁰▿⁰)◜✧˖°`)
         .setColor('#5d5ddf')
