@@ -52,7 +52,7 @@ client.on('guildMemberAdd', member => {
     const channel = member.guild.channels.cache.find(ch => ch.name === 'welcome');
     if (!channel) return;
     const embed = new Discord.MessageEmbed()
-    .setDescription(`Welcome to the server, ${member}`)
+    .setDescription(`Nep, nep! Welcome to the server, ${member}`)
     .setColor('#5b5ddf')
     channel.send(embed)
 
@@ -228,22 +228,24 @@ client.on('message', (msg) => {
             }})
         }
         if (!isNaN(Number(args[1])))  {
-            const checker_final = (checker - Number(args[1]));
-            if (checker_final > 0) {
-                moneydata[msg.author.id].money -= Number(args[1]);
-                moneydata[user.id].money += Number(args[1]);
-                msg.channel.send({embed:{
-                    title:"Money operation, nep",
-                    description:`${msg.author.username} sent ${args[1]} ${credit_emoji} to ${user.username}`,
-                    color:'#5b5ddf'
-                }})
-                fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
-                    if (err) console.error(err);
-                });
+            if ((Number(args[1])) > 99) {
+                const checker_final = (checker - Number(args[1]));
+                if (checker_final > 0) {
+                    moneydata[msg.author.id].money -= Number(args[1]);
+                    moneydata[user.id].money += Number(args[1]);
+                    msg.channel.send({embed:{
+                        title:"Money operation, nep",
+                        description:`${msg.author.username} sent ${args[1]} ${credit_emoji} to ${user.username}`,
+                        color:'#5b5ddf'
+                    }})
+                    fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
+                        if (err) console.error(err);
+                    });
+            } 
             } else {
                 msg.channel.send({embed:{
                     title:"error",
-                    description:`Not enough amount of ${credit_emoji}!\nyour balance can't be 0 or numbers below`,
+                    description:`Not enough amount of ${credit_emoji}!\n your balance can't be 0 or numbers below\n minimum amount to send is 100 ${credit_emoji} `,
                     color:'#ff0000'
                 }})
             }

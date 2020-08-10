@@ -58,5 +58,11 @@
         "group": "Economics",
         "desc": "Sends message author's credit amount to defined user.",
         "usage": "give <@user> <amount>"
+    },
+    "8ball": {
+        "name": "8ball",
+        "group": "Games",
+        "desc": "The magical neptunia is giving answers on your question!",
+        "usage": "8ball <question>"
     }
 }
