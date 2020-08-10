@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 module.exports.run = async(client, msg, args) => {
-
     var finalString = '';
     var user = msg.author;
     var userCreated = user.createdAt.toString().split(' ');

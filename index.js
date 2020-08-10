@@ -174,7 +174,7 @@ client.on('message', (msg) => {
             },
             {
                 name: "Total Money",
-                value: `globalmoney ${credit_emoji}`,
+                value: `${globalmoney} ${credit_emoji}`,
                 inline: true
             },
             {
