@@ -93,21 +93,24 @@ client.on('message', (msg) => {
     }
 
     const userStats = guildStats[msg.author.id];
-    userStats.xp += random.int(5, 25);
-    userStats.last_message = Date.now
-    const xpToNextLevel = 5 * Math.pow(userStats.level, 2) + 50 * userStats.level + 100
-    if (userStats.xp >= xpToNextLevel) {
-        userStats.level++;
-        userStats.xp = userStats.xp - xpToNextLevel
-        msg.channel.send(`${msg.author.username} has reached ${userStats.level}`)
+    if (Date.now() - userStats.last_message > 10000) {
+        userStats.xp += random.int(5, 25);
+        userStats.last_message = Date.now();
+    
+        const xpToNextLevel = 5 * Math.pow(userStats.level, 2) + 50 * userStats.level + 100
+        if (userStats.xp >= xpToNextLevel) {
+            userStats.level++;
+            userStats.xp = userStats.xp - xpToNextLevel
+            msg.channel.send(`${msg.author.username} has reached ${userStats.level}`)
+        }
+        fs.writeFile('stats.json', JSON.stringify(stats), (err) => {
+            if (err) console.error(err);
+        });
+    
+        console.log(`${msg.author.username} now has ${userStats.xp}`)
+        console.log(`${xpToNextLevel} XP needed for next level`)
     }
 
-    fs.writeFile('stats.json', JSON.stringify(stats), (err) => {
-        if (err) console.error(err);
-    });
-
-    console.log(`${msg.author.username} now has ${userStats.xp}`)
-    console.log(`${xpToNextLevel} XP needed for next level`)
 
     var cont = msg.content.slice(prefix.length).split(" ");
     var args = cont.slice(1);
