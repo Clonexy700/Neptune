@@ -31,7 +31,6 @@ fs.readdir('./commands/', (err, files) => {
 let configuration = require('./config.json'); 
 
 let token = configuration.token; 
-let prefix = configuration.prefix;
 
 const actvs = [
     "nep help",
@@ -80,6 +79,15 @@ loadCmds()
 const stats = JSON.parse(fs.readFileSync('stats.json', 'utf8'));
 
 client.on('message', (msg) => {
+
+    let prefixes = JSON.parse(fs.readFileSync("storage/guildprefix.json", 'utf-8'));
+    if (!prefixes[msg.guild.id]){
+        prefixes[msg.guild.id] = {
+            prefixes: configuration.prefix
+        };
+    }
+
+    let prefix = prefixes[msg.guild.id].prefixes;
 
     if (!msg.guild) return;
     if (msg.author.id == client.user.id) return;
