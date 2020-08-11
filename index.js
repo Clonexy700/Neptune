@@ -30,7 +30,7 @@ fs.readdir('./commands/', (err, files) => {
 
 let configuration = require('./config.json'); 
 
-let token = configuration.token; 
+let token = configuration.token;
 
 const actvs = [
     "nep help",
@@ -48,15 +48,26 @@ client.on('ready', () => {
 });
 
 client.on('guildMemberAdd', member => {
+    let roledata = JSON.parse(fs.readFileSync('storage/autorole.json', 'utf8'));
     const channel = member.guild.channels.cache.find(ch => ch.name === 'welcome');
     if (!channel) return;
     const embed = new Discord.MessageEmbed()
     .setDescription(`Nep, nep! Welcome to the server, ${member}`)
     .setColor('#fed9f3')
     channel.send(embed)
-
-    var role = member.guild.roles.cache.find(role => role.name === "ムーン");
-    member.roles.add(role);
+    if (roledata[member.guild.id] === undefined) {
+        roledata[member.guild.id] = {
+            rolename: 'none'
+        }
+        fs.writeFile('storage/autorole.json', JSON.stringify(roledata), (err) => {
+            if (err) console.error(err);
+        });
+    }
+    let role_name = roledata[member.guild.id].rolename;
+    if (role_name !== 'none'){
+        var role = member.guild.roles.cache.find(role => role.name === role_name);
+        member.roles.add(role);
+    }
 
   });
 

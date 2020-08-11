@@ -3,3 +3,4 @@ node_modules
 storage/moneydata.json
 storage/userdata.json
 stats.json
+autorole.json

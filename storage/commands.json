@@ -1,4 +1,16 @@
 {
+    "Setprefix": {
+        "name": "Setprefix",
+        "group": "Administrator",
+        "desc": "Change bot's prefix to custom one.",
+        "usage": "setprefix [prefix]"
+    },
+    "Defaultprefix": {
+        "name": "Defaultprefix",
+        "group": "Administrator",
+        "desc": "Change bot's prefix to standart one",
+        "usage": "defaultprefix"
+    },
     "Help": {
         "name": "Help",
         "group": "Information",
