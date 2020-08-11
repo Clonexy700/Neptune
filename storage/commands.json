@@ -11,6 +11,12 @@
         "desc": "Change bot's prefix to standart one",
         "usage": "defaultprefix"
     },
+    "Setautorole": {
+        "name": "Setautorole",
+        "group": "Administrator",
+        "desc": "Change custom server autorole to indicated one",
+        "usage": "setautorole guest"
+    },
     "Help": {
         "name": "Help",
         "group": "Information",

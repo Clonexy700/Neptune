@@ -14,7 +14,7 @@ module.exports.run = async(client, msg, args) => {
     fs.writeFile('./storage/autorole.json', JSON.stringify(autoroledata), (err) => {
         if (err) console.error(err);
     });
-    let role = msg.guild.roles.get(role_name);
+    let role = msg.guild.roles.cache.find(role => role.name === role_name);
     msg.channel.send({embed:{
         title:"Autorole changed",
         description:`Autorole was changed to ${role}`,
