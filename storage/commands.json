@@ -3,7 +3,7 @@
         "name": "Setprefix",
         "group": "Administrator",
         "desc": "Change bot's prefix to custom one.",
-        "usage": "setprefix [prefix]"
+        "usage": "setprefix <prefix>"
     },
     "Defaultprefix": {
         "name": "Defaultprefix",
@@ -15,7 +15,7 @@
         "name": "Setautorole",
         "group": "Administrator",
         "desc": "Change custom server autorole to indicated one",
-        "usage": "setautorole guest"
+        "usage": "setautorole <NAME_of_role_not_mention>"
     },
     "Help": {
         "name": "Help",
@@ -28,6 +28,12 @@
         "group": "Information",
         "desc": "Returns user information.",
         "usage": "info"
+    },
+    "Lvl": {
+        "name": "Lvl",
+        "group": "Information",
+        "desc": "Returns level account information.",
+        "usage": "lvl [@user]"
     },
     "Guildinfo": {
         "name": "Guildinfo",

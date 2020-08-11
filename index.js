@@ -122,7 +122,7 @@ client.on('message', (msg) => {
             userStats.xp = userStats.xp - xpToNextLevel
             msg.channel.send(`${msg.author.username} has reached ${userStats.level}`)
         }
-        fs.writeFile('stats.json', JSON.stringify(stats), (err) => {
+        fs.writeFileSync('stats.json', JSON.stringify(stats), (err) => {
             if (err) console.error(err);
         });
     
