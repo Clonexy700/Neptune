@@ -17,7 +17,7 @@ module.exports.run = async(client, msg, args) => {
         }
 
         const embed = new Discord.MessageEmbed()
-        .setColor('#5b5ddf')
+        .setColor('#fed9f3')
         .setDescription(`**${groups}**`)
         .setTitle('Groups')
         .setFooter(`Currently showing groups. To view group commands or command do\n ${prefix}help [group / command]`)
@@ -36,7 +36,7 @@ module.exports.run = async(client, msg, args) => {
         }
         
         const embed = new Discord.MessageEmbed()
-        .setColor('#5b5ddf')
+        .setColor('#fed9f3')
         .setDescription(`**${groups}**`)
         .setTitle('Groups')
         .setFooter(`Currently showing groups. To view group commands or command do\n ${prefix}help [group / command]`)
@@ -62,7 +62,7 @@ module.exports.run = async(client, msg, args) => {
 
            
             const embed = new Discord.MessageEmbed()
-                .setColor('#5b5ddf') 
+                .setColor('#fed9f3') 
 
          
             let commandsFound = 0;
@@ -111,7 +111,7 @@ module.exports.run = async(client, msg, args) => {
         if (commandFound === '') {
             msg.channel.send({embed: {
                 description:`**No group or command found titled \`${args.join(" ")}\`**`,
-                color: '#5b5ddf',
+                color: '#fed9f3',
             }})
 
         }
@@ -119,7 +119,7 @@ module.exports.run = async(client, msg, args) => {
         
         msg.channel.send({embed: {
             title:'<> means required, [] means optional',
-            color: '#5b5ddf',
+            color: '#fed9f3',
             fields: [{
                 name:commandFound,
                 value:`**Description:**\`\`${commandDesc}\`\`\n**Usage:**\`\`${commandUsage}\`\`\n**Group:**\`\`${commandGroup}\`\``

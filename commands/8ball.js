@@ -24,12 +24,12 @@ module.exports.run = async(client, msg, args) => {
         .addField('Neptune\'s 8ball', `Your question is: \`\`${question}\`\`\n Neptune's answer is: **${doMagic8BallVoodoo()}** ${easter_egg}`)
         .setImage(doMagicTrickyNeptunesImages())
         .setFooter(`°˖✧◝(⁰▿⁰)◜✧˖°`)
-        .setColor('#5d5ddf')
+        .setColor('#fed9f3')
         msg.channel.send(embed)
     } else {
         const embed = new Discord.MessageEmbed()
         .addField('Error', `Define a question`)
-        .setColor('#5d5ddf')
+        .setColor('#fed9f3')
         msg.channel.send(embed)
     }
 }

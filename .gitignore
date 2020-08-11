@@ -2,3 +2,4 @@ config.json
 node_modules
 storage/moneydata.json
 storage/userdata.json
+stats.json

@@ -11,7 +11,7 @@ module.exports.run = async(client, msg, args) => {
     .addField('Account created:\n ', `${userCreated[1]}, ${userCreated[2]}d  ${userCreated[3]}y, ${userCreated[4]}`)
     .setFooter(`ID: ${user.id}\n ｡^‿^｡`)
     .setTimestamp(msg.createdAt)
-    .setColor('#5d5ddf')
+    .setColor('#fed9f3')
     msg.channel.send(embed)
 
 }

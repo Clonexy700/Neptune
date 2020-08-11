@@ -2,9 +2,9 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const client = new Discord.Client();
 const moment = require('moment');
-
+const jsonfile = require('jsonfile')
+const random = require('random')
 const userdata = JSON.parse(fs.readFileSync('storage/userdata.json', 'utf8'));
-const commandshelp = JSON.parse(fs.readFileSync('storage/commands.json', 'utf8'));
 const moneydata = JSON.parse(fs.readFileSync('storage/moneydata.json', 'utf8'));
 
 client.commands = new Discord.Collection();
@@ -53,7 +53,7 @@ client.on('guildMemberAdd', member => {
     if (!channel) return;
     const embed = new Discord.MessageEmbed()
     .setDescription(`Nep, nep! Welcome to the server, ${member}`)
-    .setColor('#5b5ddf')
+    .setColor('#fed9f3')
     channel.send(embed)
 
     var role = member.guild.roles.cache.find(role => role.name === "ムーン");
@@ -66,20 +66,51 @@ client.on('guildMemberAdd', member => {
     if (!channel) return;
     const embed = new Discord.MessageEmbed()
     .setDescription(`${member} left the "**${member.guild.name}**" server`)
-    .setColor('#5b5ddf')
+    .setColor('#fed9f3')
     channel.send(embed)
   });
 
+  client.on("guildCreate", guild => {
+    console.log("Joined a new guild: " + guild.name);
+    //Your other stuff like adding to guildArray
+})
+
 loadCmds()
+
+const stats = JSON.parse(fs.readFileSync('stats.json', 'utf8'));
 
 client.on('message', (msg) => {
 
+    if (!msg.guild) return;
+    if (msg.author.id == client.user.id) return;
+
+    if (!stats[msg.guild.id]) stats[msg.guild.id] = {};
+    const guildStats = stats[msg.guild.id];
+    if (!guildStats[msg.author.id]) guildStats[msg.author.id] = {
+        xp: 0,
+        level: 0,
+        last_message: 0
+    }
+
+    const userStats = guildStats[msg.author.id];
+    userStats.xp += random.int(5, 25);
+    userStats.last_message = Date.now
+    const xpToNextLevel = 5 * Math.pow(userStats.level, 2) + 50 * userStats.level + 100
+    if (userStats.xp >= xpToNextLevel) {
+        userStats.level++;
+        userStats.xp = userStats.xp - xpToNextLevel
+        msg.channel.send(`${msg.author.username} has reached ${userStats.level}`)
+    }
+
+    fs.writeFile('stats.json', JSON.stringify(stats), (err) => {
+        if (err) console.error(err);
+    });
+
+    console.log(`${msg.author.username} now has ${userStats.xp}`)
+    console.log(`${xpToNextLevel} XP needed for next level`)
 
     var cont = msg.content.slice(prefix.length).split(" ");
     var args = cont.slice(1);
-
-    if (!msg.guild) return;
-    if (msg.author.bot) return;
 
     if (!userdata[msg.author.id]) userdata[msg.author.id] = {}
     if (!userdata[msg.author.id].msgsent) userdata[msg.author.id].msgsent = 0;
@@ -107,7 +138,7 @@ client.on('message', (msg) => {
     if (msg.content === (prefix + 'reload')) {
         loadCmds()
         const embed = new Discord.MessageEmbed()
-        .setColor('#5b5ddf')
+        .setColor('#fed9f3')
         .setDescription('``All commands are reloaded``')
         msg.channel.send(embed)
     }
@@ -120,14 +151,14 @@ client.on('message', (msg) => {
             msg.channel.send({embed:{
                 title:"Daily reward",
                 description:`+500 ${credit_emoji} added to your account!`,
-                color:'#5b5ddf'
+                color:'#fed9f3'
             }})
 
         } else {
             msg.channel.send({embed:{
                 title:"Daily reward",
                 description:`You already collected your daily reward ${credit_emoji}!You can collect your next reward ` + moment().endOf('day').fromNow() + '.',
-                color:'#5b5ddf'
+                color:'#fed9f3'
             }})
         }
         fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
@@ -147,7 +178,7 @@ client.on('message', (msg) => {
             .setFooter('∩˙▿˙∩')
             .setThumbnail('https://cdn.discordapp.com/attachments/621005423335702528/676802134875832350/doesnt_need_money_mokou.png')
             .setTimestamp(msg.createdAt)
-            .setColor('#5b5ddf')
+            .setColor('#fed9f3')
             msg.channel.send(embed)
         }  else {
             const credit_emoji = client.emojis.cache.get("741939356003991562")
@@ -158,7 +189,7 @@ client.on('message', (msg) => {
             .setFooter('∩˙▿˙∩')
             .setThumbnail('https://cdn.discordapp.com/attachments/621005423335702528/676802134875832350/doesnt_need_money_mokou.png')
             .setTimestamp(msg.createdAt)
-            .setColor('#5b5ddf')
+            .setColor('#fed9f3')
             msg.channel.send(embed)
         }
     }
@@ -182,7 +213,7 @@ client.on('message', (msg) => {
 
         msg.channel.send({embed:{
             title:"Nep nep",
-            color:'#5b5ddf',
+            color:'#fed9f3',
             fields:[{
                 name: "Accounts",
                 value:globalusers,
@@ -236,7 +267,7 @@ client.on('message', (msg) => {
                     msg.channel.send({embed:{
                         title:"Money operation, nep",
                         description:`${msg.author.username} sent ${args[1]} ${credit_emoji} to ${user.username}`,
-                        color:'#5b5ddf'
+                        color:'#fed9f3'
                     }})
                     fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
                         if (err) console.error(err);

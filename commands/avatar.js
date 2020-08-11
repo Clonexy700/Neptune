@@ -7,13 +7,13 @@ module.exports.run = async(client, msg, args) => {
         const embed = new Discord.MessageEmbed()
         .addField('Nep nep!', `${msg.author.username}'s avatar`, false)
         .setImage(msg.author.displayAvatarURL())
-        .setColor('#5b5ddf')
+        .setColor('#fed9f3')
         msg.channel.send(embed)
     } else {
         const embed = new Discord.MessageEmbed()
         .addField('Nep nep!', `${user.username}'s avatar`, false)
         .setImage(user.displayAvatarURL())
-        .setColor('#5b5ddf')
+        .setColor('#fed9f3')
         msg.channel.send(embed)
     }
 

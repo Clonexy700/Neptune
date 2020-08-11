@@ -11,6 +11,12 @@
         "desc": "Returns user information.",
         "usage": "info"
     },
+    "Guildinfo": {
+        "name": "Guildinfo",
+        "group": "Information",
+        "desc": "Returns information about guild where this command used.",
+        "usage": "guildinfo"
+    },
     "Ping": {
         "name": "Ping",
         "group": "Information",

@@ -3,7 +3,7 @@ const fs = require('fs');
 module.exports.run = async(client, msg, args) => {
 
         const embed = new Discord.MessageEmbed()
-        .setColor('#5b5ddf')
+        .setColor('#fed9f3')
         .setDescription("Nep! Ping: ``" + Math.round(client.ws.ping) + "`` ms")
         msg.channel.send(embed)
 
