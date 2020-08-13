@@ -4,7 +4,7 @@ module.exports.run = async(client, msg, args) => {
     let question = encode(args.join(" "));
     let link = `https://www.lmgtfy.com/?q=${question}`
     let embed = new Discord.MessageEmbed()
-    .setColor("#00FF00")
+    .setColor('#fed9f3')
     .setTimestamp()
     .setFooter(client.user.username, client.user.displayAvatarURL())
     .setTitle("lmgtfy, nep")
