@@ -77,6 +77,12 @@
         "desc": "Returns full info about weather in location",
         "usage": "weather <location>"
     },
+    "Lmgtfy": {
+        "name": "Lmgtfy",
+        "group": "Information",
+        "desc": "Returns let me google this for you link",
+        "usage": "lmgtfy <question>"
+    },
     "Alicard": {
         "name": "Alicard",
         "group": "Fun",
@@ -88,6 +94,12 @@
         "group": "Fun",
         "desc": "Sends AmiyaCarrot gif",
         "usage": "carrot"
+    },
+    "Meme": {
+        "name": "Meme",
+        "group": "Fun",
+        "desc": "Sends random meme from reddit",
+        "usage": "meme"
     },
     "Money": {
         "name": "Money",

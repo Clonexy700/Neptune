@@ -19,6 +19,7 @@
     "node-fetch": "^2.6.0",
     "random": "^2.2.0",
     "random-puppy": "^1.1.0",
+    "strict-uri-encode": "^2.0.0",
     "weather-js": "^2.0.0"
   }
 }
