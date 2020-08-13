@@ -35,6 +35,12 @@
         "desc": "Displays a list of commands.",
         "usage": "help [group OR command]"
     },
+    "Instagram": {
+        "name": "Instagram",
+        "group": "Information",
+        "desc": "Returns information about instagram account specified by id.",
+        "usage": "instagram [instagram_id]"
+    },
     "Info": {
         "name": "Info",
         "group": "Information",

@@ -13,9 +13,9 @@ module.exports.run = async(client, msg, args) => {
     }
 
     try {
-        if (args.join(" ").toLowerCase().includes("token")) {
-            return;
-        }
+            if (args.join(" ").toLowerCase().includes("token")) {
+                return;
+            }
 
         const toEval = args.join(" ")
         const evaluated = eval(toEval)
