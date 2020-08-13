@@ -5,6 +5,12 @@
         "desc": "Change bot's prefix to custom one.",
         "usage": "setprefix <prefix>"
     },
+    "Eval": {
+        "name": "Eval",
+        "group": "Administrator",
+        "desc": "Evaluate code, works only for Neptune owner",
+        "usage": "eval [code]"
+    },
     "Defaultprefix": {
         "name": "Defaultprefix",
         "group": "Administrator",
