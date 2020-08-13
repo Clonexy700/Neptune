@@ -53,6 +53,12 @@
         "desc": "Return user's avatar to channel.",
         "usage": "avatar [@user]"
     },
+    "Weather": {
+        "name": "Weather",
+        "group": "Information",
+        "desc": "Returns full info about weather in location",
+        "usage": "weather <location>"
+    },
     "Alicard": {
         "name": "Alicard",
         "group": "Fun",
