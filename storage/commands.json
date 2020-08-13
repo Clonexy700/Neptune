@@ -17,6 +17,12 @@
         "desc": "Change custom server autorole to indicated one",
         "usage": "setautorole <NAME_of_role_not_mention>"
     },
+    "Purge": {
+        "name": "Purge",
+        "group": "Moderation",
+        "desc": "Delete specified amount of messages",
+        "usage": "purge [amount_of_messages]"
+    },
     "Help": {
         "name": "Help",
         "group": "Information",
