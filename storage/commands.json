@@ -94,5 +94,29 @@
         "group": "Games",
         "desc": "The magical neptunia is giving answers on your question!",
         "usage": "8ball <question>"
+    },
+    "Dice": {
+        "name": "Dice",
+        "group": "Games",
+        "desc": "Rolling the dice!",
+        "usage": "dice [n_of_sides]"
+    },
+    "Hug": {
+        "name": "Hug",
+        "group": "Emotions",
+        "desc": "Sends hug emotion",
+        "usage": "hug [@user] [message]"
+    },
+    "Pat": {
+        "name": "Pat",
+        "group": "Emotions",
+        "desc": "Sends pat emotion",
+        "usage": "pat [@user] [message]"
+    },
+    "Kiss": {
+        "name": "Kiss",
+        "group": "Emotions",
+        "desc": "Sends kiss emotion",
+        "usage": "kiss [@user] [message]"
     }
 }

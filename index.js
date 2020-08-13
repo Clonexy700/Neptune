@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const client = new Discord.Client();
 const moment = require('moment');
-const jsonfile = require('jsonfile')
 const random = require('random')
 const userdata = JSON.parse(fs.readFileSync('storage/userdata.json', 'utf8'));
 const moneydata = JSON.parse(fs.readFileSync('storage/moneydata.json', 'utf8'));
