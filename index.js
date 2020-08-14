@@ -91,6 +91,16 @@ const stats = JSON.parse(fs.readFileSync('stats.json', 'utf8'));
 
 client.on('message', (msg) => {
 
+    function casino() {
+        var rand = ['1', '2', '3', '4', '5', '6', '7', '8']
+        return rand[Math.floor(Math.random()*rand.length)];
+    }
+
+    function coin() {
+        var rand = ['heads', 'tails']
+        return rand[Math.floor(Math.random()*rand.length)];
+    }
+
     let prefixes = JSON.parse(fs.readFileSync("storage/guildprefix.json", 'utf-8'));
     if (!prefixes[msg.guild.id]){
         prefixes[msg.guild.id] = {
@@ -306,6 +316,194 @@ client.on('message', (msg) => {
         }
 
     }
+        if (msg.content.startsWith(prefix + 'wheel')) {
+            const credit_emoji = client.emojis.cache.get("741939356003991562")
+            const checker = moneydata[msg.author.id].money;
+            var bet = args [0];
+            if (!args[0]) {
+                msg.channel.send({embed:{
+                    title:"error",
+                    description:`You must define amount of your bet in ${credit_emoji}!`,
+                    color:'#ff0000'
+                }})
+            }
+    
+            if (isNaN(Number(args[0]))) {
+                msg.channel.send({embed:{
+                    title:"error",
+                    description:`Your bet amount of ${credit_emoji} must be number!`,
+                    color:'#ff0000'
+                }})
+            }
+            if (!isNaN(Number(args[0])))  {
+                if ((Number(args[0])) > 49) {
+                    const checker_final = (checker - Number(args[0]));
+                    if (checker_final > 0) {
+                        moneydata[msg.author.id].money -= Number(args[0]);
+                        var arrow = '↖️';
+                        var casino_value = casino();
+                        if (casino_value === '1'){
+                            var arrow = '↖️'
+                            var bet = bet / 2
+                        }
+                        if (casino_value === '2'){
+                            arrow = '⬆️️'
+                            var bet = bet / 10
+                        }
+                        if (casino_value === '3'){
+                            arrow = '↗️'
+                            var bet = Math.round(bet / 3)
+                        }
+                        if (casino_value === '4'){
+                            arrow = '➡️️'
+                            var bet = bet * 1.2
+                        }
+                        if (casino_value === '5'){
+                            arrow = '↘️️'
+                            var bet = bet * 1.5
+                        }
+                        if (casino_value === '6'){
+                            arrow = '⬇️️'
+                            var bet = bet * 1.8
+                        }
+                        if (casino_value === '7'){
+                            arrow = '↙️️'
+                            var bet = bet * 2.5
+                        }
+                        if (casino_value === '8'){
+                            arrow = '⬅️️'
+                            var bet = bet / 5
+                        }
+                        const embed = new Discord.MessageEmbed()
+                        .setDescription(`**Wheel**\n${msg.author} get ${bet} ${credit_emoji}\n\n\n**♫|0.5  ♩|0.1  ♪|0.3**\n\n\n**♬|0.2  ${arrow}  ♙|1.2**\n\n\n**♜|2.5  ♝|1.8  ♞|1.5**`)
+                        .setTimestamp()
+                        .setFooter(client.user.username, client.user.displayAvatarURL())
+                        .setColor('#fed9f3')
+                        msg.channel.send(embed)
+                        moneydata[msg.author.id].money += Number(bet);
+                        fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
+                            if (err) console.error(err);
+                        });
+                } 
+                } else {
+                    msg.channel.send({embed:{
+                        title:"error",
+                        description:`Not enough amount of ${credit_emoji}!\n your balance can't be 0 or numbers below\n minimum amount of bet is 50 ${credit_emoji} `,
+                        color:'#ff0000'
+                    }})
+                }
+    
+            }
+        }
+        if (msg.content.startsWith(prefix + 'coin')) {
+            const credit_emoji = client.emojis.cache.get("741939356003991562")
+            const checker = moneydata[msg.author.id].money;
+            var bet = args [0];
+            if (!args[0]) {
+                return ({embed:{
+                    title:"error",
+                    description:`You must define amount of your bet in ${credit_emoji}!`,
+                    color:'#ff0000'
+                }})
+            }
+
+            if (!args[1]) {
+                return ({embed:{
+                    title:"error",
+                    description:`You must define side of coin with heads/tails or h/t!`,
+                    color:'#ff0000'
+                }})
+            }
+    
+            if (isNaN(Number(args[0]))) {
+                return ({embed:{
+                    title:"error",
+                    description:`Your bet amount of ${credit_emoji} must be number!`,
+                    color:'#ff0000'
+                }})
+            }
+            if (!args[1].startsWith('h')) {
+                if (!args[1].startsWith('t')) {
+                    return ({embed:{
+                        title:"error",
+                        description:`You must define side of coin with heads/tails or h/t!`,
+                        color:'#ff0000'
+                    }})
+                }
+            }
+            if (!isNaN(Number(args[0])))  {
+                if ((Number(args[0])) > 49) {
+                    const checker_final = (checker - Number(args[0]));
+                    if (checker_final > 0) {
+                        moneydata[msg.author.id].money -= Number(args[0]);
+                        var casino_value = coin();
+                        if (args[1].startsWith('h')) {
+                            if (casino_value === 'heads'){
+                                var bet = bet * 2
+                                const embed = new Discord.MessageEmbed()
+                                .setDescription(`**Coin**\nThe coin side was **heads**!\n${msg.author} win ${bet} ${credit_emoji}`)
+                                .setTimestamp()
+                                .setFooter(client.user.username, client.user.displayAvatarURL())
+                                .setColor('#fed9f3')
+                                msg.channel.send(embed)
+                                moneydata[msg.author.id].money += Number(bet);
+                                fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
+                                    if (err) console.error(err);
+                                });
+                            }
+                            if (casino_value === 'tails'){
+                                var bet = 0
+                                const embed = new Discord.MessageEmbed()
+                                .setDescription(`**Coin**\nThe coin side was **tails**!\n${msg.author} loose ${credit_emoji}`)
+                                .setTimestamp()
+                                .setFooter(client.user.username, client.user.displayAvatarURL())
+                                .setColor('#fed9f3')
+                                msg.channel.send(embed)
+                                moneydata[msg.author.id].money += Number(bet);
+                                fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
+                                    if (err) console.error(err);
+                                });
+                            }
+                        }
+                        if (args[1].startsWith('t')) {
+                            if (casino_value === 'heads'){
+                                var bet = 0
+                                const embed = new Discord.MessageEmbed()
+                                .setDescription(`**Coin**\nThe coin side was **heads**!\n${msg.author} loose ${credit_emoji}`)
+                                .setTimestamp()
+                                .setFooter(client.user.username, client.user.displayAvatarURL())
+                                .setColor('#fed9f3')
+                                msg.channel.send(embed)
+                                moneydata[msg.author.id].money += Number(bet);
+                                fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
+                                    if (err) console.error(err);
+                                });
+                            }
+                            if (casino_value === 'tails'){
+                                var bet = bet * 2
+                                const embed = new Discord.MessageEmbed()
+                                .setDescription(`**Coin**\nThe coin side was **tails**!\n${msg.author} win ${bet} ${credit_emoji}`)
+                                .setTimestamp()
+                                .setFooter(client.user.username, client.user.displayAvatarURL())
+                                .setColor('#fed9f3')
+                                msg.channel.send(embed)
+                                moneydata[msg.author.id].money += Number(bet);
+                                fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
+                                    if (err) console.error(err);
+                                });
+                            }
+                        }
+                    }
+                } 
+                } else {
+                    msg.channel.send({embed:{
+                        title:"error",
+                        description:`Not enough amount of ${credit_emoji}!\n your balance can't be 0 or numbers below\n minimum amount of bet is 50 ${credit_emoji} `,
+                        color:'#ff0000'
+                    }})
+                }
+    
+            }
 
 });
 

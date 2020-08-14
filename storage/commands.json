@@ -113,11 +113,11 @@
         "desc": "Daily money reward.",
         "usage": "daily"
     },
-    "Moneytop": {
-        "name": "Moneytop",
+    "Topmoney": {
+        "name": "Topmoney",
         "group": "Economics",
         "desc": "Sends global money top.",
-        "usage": "moneytop"
+        "usage": "topmoney"
     },
     "Give": {
         "name": "Give",
@@ -136,6 +136,18 @@
         "group": "Games",
         "desc": "Rolling the dice!",
         "usage": "dice [n_of_sides]"
+    },
+    "Wheel": {
+        "name": "Wheel",
+        "group": "Games",
+        "desc": "Rolling the wheel and get money or loose them!",
+        "usage": "wheel <bet>"
+    },
+    "Coin": {
+        "name": "Coin",
+        "group": "Games",
+        "desc": "Flip the coin and get money or loose them!",
+        "usage": "wheel <bet> <side[heads/tails/h/t]>"
     },
     "Hug": {
         "name": "Hug",

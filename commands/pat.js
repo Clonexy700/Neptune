@@ -16,7 +16,7 @@ module.exports.run = async(client, msg, args) => {
     }
     var message = args.slice(1, args.length).join(" ");
     const embed = new Discord.MessageEmbed()
-    .addField('Hugging', `${msg.author} ✧ ${user} | ${message}`)
+    .addField('Patting', `${msg.author} ✧ ${user} | ${message}`)
     .setImage(randomgif())
     .setFooter('(ᴖ◡ᴖ)♪')
     .setColor('#fed9f3')
