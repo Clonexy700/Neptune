@@ -531,7 +531,6 @@ client.on('message', (msg) => {
                         moneydata[msg.author.id].money -= Number(args[0]);
                         var random_guess_number = Math.floor(Math.random() * 100) + 1
                         var random_guess_number = random_guess_number.toString();
-                        console.log(random_guess_number)
                         var tries = 0
                         const embed = new Discord.MessageEmbed()
                         .setDescription("Try to guess number between 1 and 100... Will expire in 20 seconds")
@@ -752,24 +751,92 @@ client.on('message', (msg) => {
             }
         }
 
-        if (msg.content === (prefix + 'testawait')) {
-            const filter = m => m.author.id === msg.author.id;
-            msg.reply("Please write something for test... Will expire in 10 seconds").then(r => r.delete({timeout: 20000}));
-            msg.channel.awaitMessages(filter, {
-                max: 1,
-                time: 10000
-            }).then(collected => {
-                if(collected.first().content === 'cancel'){
-                    return msg.reply('Canceled')
-                }
-                let napisal_test = collected.first().content
-                const embed = new Discord.MessageEmbed()
-                .setDescription(`${napisal_test} - you wrote`)
-                .setTimestamp()
-                .setFooter(client.user.username, client.user.displayAvatarURL())
-                .setColor('#fed9f3')
-                return msg.channel.send(embed)
-            })
+        if (msg.content.startsWith(prefix + 'cups')) {
+            const credit_emoji = client.emojis.cache.get("741939356003991562")
+            const checker = moneydata[msg.author.id].money;
+            var bet = args [0];
+            var cups = args[1];
+            if (!args[0]) {
+                return msg.channel.send({embed:{
+                    title:"error",
+                    description:`You must define amount of your bet in ${credit_emoji}!`,
+                    color:'#ff0000'
+                }})
+            }
+            
+            if (!args[1]) {
+                var cups = 3
+            }
+            if (args[1] < 3) {
+                return msg.channel.send({embed:{
+                    title:"error",
+                    description:`At least 3 cups for playing!`,
+                    color:'#ff0000'
+                }})
+            }
+    
+            if (isNaN(Number(args[0]))) {
+                return msg.channel.send({embed:{
+                    title:"error",
+                    description:`Your bet amount of ${credit_emoji} must be number!`,
+                    color:'#ff0000'
+                }})
+            }
+            if (!isNaN(Number(args[0])))  {
+                if ((Number(args[0])) > 49) {
+                    const checker_final = (checker - Number(args[0]));
+                    if (checker_final > 0) {
+                        moneydata[msg.author.id].money -= Number(args[0]);
+                        var cup_to_choose = (Math.floor(Math.random() * cups) + 1)
+                        const embed = new Discord.MessageEmbed()
+                        .setDescription(`Try to guess cup between 1 and ${cups}... Will expire in 20 seconds`)
+                        .setTimestamp()
+                        .setFooter(client.user.username, client.user.displayAvatarURL())
+                        .setColor('#fed9f3')
+                        msg.channel.send(embed).then(r => r.delete({timeout: 20000}));
+                        const filter = m => m.author.id === msg.author.id;
+                        msg.channel.awaitMessages(filter, {
+                            max: 1,
+                            time: 20000
+                        }).then(collected => {
+                            if(collected.first().content === 'cancel'){
+                                return msg.reply('Canceled')
+                            }
+                            if(isNaN(collected.first().content)){
+                                return msg.reply('Canceled because you must define numbers')
+                            }
+                            var cup = Math.floor(collected.first().content)
+                            if (cup == cup_to_choose){
+                                var add_msg_in = `You guesed right. You win! ${msg.author} get \`\` ${bet * cups} \`\` ${credit_emoji}`
+                                const embed_first = new Discord.MessageEmbed()
+                                .setDescription(`Right cup is - \`\`${cup_to_choose}\`\`.\n ${add_msg_in}\n`)
+                                .setTimestamp()
+                                .setFooter(client.user.username, client.user.displayAvatarURL())
+                                .setColor('#fed9f3')
+                                msg.channel.send(embed_first)
+                                moneydata[msg.author.id].money += Number((args[0]*Number(cups)));
+                                fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
+                                    if (err) console.error(err);
+                                });
+                            } else {
+                                var add_msg_in = `You loose, your choice was - \`\`${cup}\`\``
+                                const embed_first = new Discord.MessageEmbed()
+                                .setDescription(`Right cup is - \`\`${cup_to_choose}\`\`.\n ${add_msg_in}\n`)
+                                .setTimestamp()
+                                .setFooter(client.user.username, client.user.displayAvatarURL())
+                                .setColor('#fed9f3')
+                                msg.channel.send(embed_first)
+                            }
+                        })
+                    }
+                } 
+            } else {
+                msg.channel.send({embed:{
+                    title:"error",
+                    description:`Not enough amount of ${credit_emoji}!\n your balance can't be 0 or numbers below\n minimum amount of bet is 50 ${credit_emoji} `,
+                    color:'#ff0000'
+                }})
+            }
         }
     
         

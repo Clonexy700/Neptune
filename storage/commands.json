@@ -161,6 +161,12 @@
         "desc": "Guess the number and win credits!",
         "usage": "guessnum <bet>"
     },
+    "Cups": {
+        "name": "Cups",
+        "group": "Games",
+        "desc": "Guess the cup and win credits!",
+        "usage": "cups <bet> [cup_amount]"
+    },
     "Hug": {
         "name": "Hug",
         "group": "Emotions",
