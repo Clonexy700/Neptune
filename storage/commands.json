@@ -184,5 +184,11 @@
         "group": "Emotions",
         "desc": "Sends kiss emotion",
         "usage": "kiss [@user] [message]"
+    },
+    "Cry": {
+        "name": "Cry",
+        "group": "Emotions",
+        "desc": "Sends crying emotion",
+        "usage": "cry"
     }
 }
