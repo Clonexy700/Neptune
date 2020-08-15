@@ -17,8 +17,7 @@ module.exports.run = async(client, msg, args) => {
         .addField('Degree type', `${location.degreetype}`, true)
         .addField('Temperature', `${current.temperature}`, true)
         .addField('Feels like', `${current.feelslike}`, true)
-        .addField('Winds', `${current.feelslike}`, true)
-        .addField('Feels like', `${current.winddisplay}`, true)
+        .addField('Winds', `${current.winddisplay}`, true)
         .addField('Humidity', `${current.humidity}%`, true)
 
         msg.channel.send(embed)

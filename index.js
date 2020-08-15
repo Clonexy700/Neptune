@@ -400,7 +400,7 @@ client.on('message', (msg) => {
             const checker = moneydata[msg.author.id].money;
             var bet = args [0];
             if (!args[0]) {
-                return ({embed:{
+                return msg.channel.send({embed:{
                     title:"error",
                     description:`You must define amount of your bet in ${credit_emoji}!`,
                     color:'#ff0000'
@@ -408,7 +408,7 @@ client.on('message', (msg) => {
             }
 
             if (!args[1]) {
-                return ({embed:{
+                return msg.channel.send({embed:{
                     title:"error",
                     description:`You must define side of coin with heads/tails or h/t!`,
                     color:'#ff0000'
@@ -416,7 +416,7 @@ client.on('message', (msg) => {
             }
     
             if (isNaN(Number(args[0]))) {
-                return ({embed:{
+                return msg.channel.send({embed:{
                     title:"error",
                     description:`Your bet amount of ${credit_emoji} must be number!`,
                     color:'#ff0000'
@@ -424,7 +424,7 @@ client.on('message', (msg) => {
             }
             if (!args[1].startsWith('h')) {
                 if (!args[1].startsWith('t')) {
-                    return ({embed:{
+                    return msg.channel.send({embed:{
                         title:"error",
                         description:`You must define side of coin with heads/tails or h/t!`,
                         color:'#ff0000'
@@ -495,6 +495,252 @@ client.on('message', (msg) => {
                         }
                     }
                 } 
+            } else {
+                msg.channel.send({embed:{
+                    title:"error",
+                    description:`Not enough amount of ${credit_emoji}!\n your balance can't be 0 or numbers below\n minimum amount of bet is 50 ${credit_emoji} `,
+                    color:'#ff0000'
+                }})
+            }
+    
+        }
+
+        if (msg.content.startsWith(prefix + 'guessnum')) {
+            const credit_emoji = client.emojis.cache.get("741939356003991562")
+            const checker = moneydata[msg.author.id].money;
+            var bet = args [0];
+            if (!args[0]) {
+                return msg.channel.send({embed:{
+                    title:"error",
+                    description:`You must define amount of your bet in ${credit_emoji}!`,
+                    color:'#ff0000'
+                }})
+            }
+    
+            if (isNaN(Number(args[0]))) {
+                return msg.channel.send({embed:{
+                    title:"error",
+                    description:`Your bet amount of ${credit_emoji} must be number!`,
+                    color:'#ff0000'
+                }})
+            }
+            if (!isNaN(Number(args[0])))  {
+                if ((Number(args[0])) > 49) {
+                    const checker_final = (checker - Number(args[0]));
+                    if (checker_final > 0) {
+                        moneydata[msg.author.id].money -= Number(args[0]);
+                        var random_guess_number = Math.floor(Math.random() * 100) + 1
+                        var random_guess_number = random_guess_number.toString();
+                        console.log(random_guess_number)
+                        var tries = 0
+                        const embed = new Discord.MessageEmbed()
+                        .setDescription("Try to guess number between 1 and 100... Will expire in 20 seconds")
+                        .setTimestamp()
+                        .setFooter(client.user.username, client.user.displayAvatarURL())
+                        .setColor('#fed9f3')
+                        msg.channel.send(embed).then(r => r.delete({timeout: 20000}));
+                        const filter = m => m.author.id === msg.author.id;
+                        msg.channel.awaitMessages(filter, {
+                            max: 1,
+                            time: 20000
+                        }).then(collected => {
+                            if(collected.first().content === 'cancel'){
+                                return msg.reply('Canceled')
+                            }
+                            if(isNaN(collected.first().content)){
+                                return msg.reply('Canceled because you must define numbers')
+                            }
+                            var number = Math.floor(collected.first().content)
+                            var add_msg_in = ''
+                            if (number > random_guess_number){
+                                var tries = 1
+                                var add_msg_in = 'Your number is too \`\`big\`\`'
+                            }
+                            if (number < random_guess_number){
+                                var tries = 1
+                                var add_msg_in = 'Your number is too \`\`low\`\`'
+                            }
+                            if (number == random_guess_number){
+                                var add_msg_in = `You guesed right. You win! ${msg.author} get \`\` ${bet * 2} \`\` ${credit_emoji}`
+                                var tries = 0
+                            }
+                            const embed_first = new Discord.MessageEmbed()
+                            .setDescription(`Your guess is - \`\`${number}\`\`.\n ${add_msg_in}\nAttempt: \`\`${tries}\`\``)
+                            .setTimestamp()
+                            .setFooter(client.user.username, client.user.displayAvatarURL())
+                            .setColor('#fed9f3')
+                            msg.channel.send(embed_first)
+                            if (tries === 0) {
+                                moneydata[msg.author.id].money += Number((args[0]*2));
+                                fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
+                                    if (err) console.error(err);
+                                });
+                            }
+                            if (tries === 1) {
+                                msg.channel.awaitMessages(filter, {
+                                    max: 1,
+                                    time: 20000
+                                }).then(collected => {
+                                    if(collected.first().content === 'cancel'){
+                                        return msg.reply('Canceled')
+                                    }
+                                    if(isNaN(collected.first().content)){
+                                        return msg.reply('Canceled because you must define numbers')
+                                    }
+                                    var number = Math.floor(collected.first().content)
+                                    var add_msg_in = ''
+                                    if (number > random_guess_number){
+                                        var tries = 2
+                                        var add_msg_in = 'Your number is too \`\`big\`\`'
+                                    }
+                                    if (number < random_guess_number){
+                                        var tries = 2
+                                        var add_msg_in = 'Your number is too \`\`low\`\`'
+                                    }
+                                    if (number == random_guess_number){
+                                        var add_msg_in = `You guesed right. You win! ${msg.author} get \`\` ${bet * 2} \`\` ${credit_emoji}`
+                                        var tries = 1
+                                    }
+                                    const embed_first = new Discord.MessageEmbed()
+                                    .setDescription(`Your guess is - \`\`${number}\`\`.\n ${add_msg_in}\nAttempt: \`\`${tries}\`\``)
+                                    .setTimestamp()
+                                    .setFooter(client.user.username, client.user.displayAvatarURL())
+                                    .setColor('#fed9f3')
+                                    msg.channel.send(embed_first)
+                                    if (tries === 2) {
+                                        msg.channel.awaitMessages(filter, {
+                                            max: 1,
+                                            time: 20000
+                                        }).then(collected => {
+                                            if(collected.first().content === 'cancel'){
+                                                return msg.reply('Canceled')
+                                            }
+                                            if(isNaN(collected.first().content)){
+                                                return msg.reply('Canceled because you must define numbers')
+                                            }
+                                            var number = Math.floor(collected.first().content)
+                                            var add_msg_in = ''
+                                            if (number > random_guess_number){
+                                                var tries = 3
+                                                var add_msg_in = 'Your number is too \`\`big\`\`'
+                                            }
+                                            if (number < random_guess_number){
+                                                var tries = 3
+                                                var add_msg_in = 'Your number is too \`\`low\`\`'
+                                            }
+                                            if (number == random_guess_number){
+                                                var add_msg_in = `You guesed right. You win! ${msg.author} get \`\` ${bet * 2}\`\` ${credit_emoji}`
+                                                var tries = 2
+                                            }
+                                            const embed_first = new Discord.MessageEmbed()
+                                            .setDescription(`Your guess is - \`\`${number}\`\`.\n ${add_msg_in}\nAttempt: \`\`${tries}\`\``)
+                                            .setTimestamp()
+                                            .setFooter(client.user.username, client.user.displayAvatarURL())
+                                            .setColor('#fed9f3')
+                                            msg.channel.send(embed_first)
+                                            if (tries === 3) {
+                                                msg.channel.awaitMessages(filter, {
+                                                    max: 1,
+                                                    time: 20000
+                                                }).then(collected => {
+                                                    if(collected.first().content === 'cancel'){
+                                                        return msg.reply('Canceled')
+                                                    }
+                                                    if(isNaN(collected.first().content)){
+                                                        return msg.reply('Canceled because you must define numbers')
+                                                    }
+                                                    var number = Math.floor(collected.first().content)
+                                                    var add_msg_in = ''
+                                                    if (number > random_guess_number){
+                                                        var tries = 4
+                                                        var add_msg_in = 'Your number is too \`\`big\`\`'
+                                                    }
+                                                    if (number < random_guess_number){
+                                                        var tries = 4
+                                                        var add_msg_in = 'Your number is too \`\`low\`\`'
+                                                    }
+                                                    if (number == random_guess_number){
+                                                        var add_msg_in = `You guesed right. You win! ${msg.author} get \`\` ${bet * 2} \`\` ${credit_emoji}`
+                                                        var tries = 3
+                                                    }
+                                                    const embed_first = new Discord.MessageEmbed()
+                                                    .setDescription(`Your guess is - \`\`${number}\`\`.\n ${add_msg_in}\nAttempt: \`\`${tries}\`\``)
+                                                    .setTimestamp()
+                                                    .setFooter(client.user.username, client.user.displayAvatarURL())
+                                                    .setColor('#fed9f3')
+                                                    msg.channel.send(embed_first)
+                                                    if (tries === 4) {
+                                                        msg.channel.awaitMessages(filter, {
+                                                            max: 1,
+                                                            time: 20000
+                                                        }).then(collected => {
+                                                            if(collected.first().content === 'cancel'){
+                                                                return msg.reply('Canceled')
+                                                            }
+                                                            if(isNaN(collected.first().content)){
+                                                                return msg.reply('Canceled because you must define numbers')
+                                                            }
+                                                            var number = Math.floor(collected.first().content)
+                                                            var add_msg_in = ''
+                                                            if (number > random_guess_number){
+                                                                var tries = 5
+                                                                var add_msg_in = 'Your number is too \`\`big\`\`'
+                                                            }
+                                                            if (number < random_guess_number){
+                                                                var tries = 5
+                                                                var add_msg_in = 'Your number is too \`\`low\`\`'
+                                                            }
+                                                            if (number == random_guess_number){
+                                                                var add_msg_in = `You guesed right. You win! ${msg.author} get \`\` ${bet * 2} \`\` ${credit_emoji}`
+                                                                var tries = 4
+                                                            }
+                                                            const embed_first = new Discord.MessageEmbed()
+                                                            .setDescription(`Your guess is - ${number}.\n ${add_msg_in}\nAttempt: \`\`${tries}\`\``)
+                                                            .setTimestamp()
+                                                            .setFooter(client.user.username, client.user.displayAvatarURL())
+                                                            .setColor('#fed9f3')
+                                                            msg.channel.send(embed_first)
+                                                            if (tries === 5) {
+                                                                const embed_first = new Discord.MessageEmbed()
+                                                                .setDescription(`You loose!\n Guessed number was\`\` ${random_guess_number} \`\``)
+                                                                .setTimestamp()
+                                                                .setFooter(client.user.username, client.user.displayAvatarURL())
+                                                                .setColor('#fed9f3')
+                                                                msg.channel.send(embed_first)
+
+                                                            }
+                                                        })
+                                                    } else {
+                                                        moneydata[msg.author.id].money += Number((args[0]*2));
+                                                        fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
+                                                            if (err) console.error(err);
+                                                        });
+                                                    }
+                                                })
+                                            } else {
+                                                moneydata[msg.author.id].money += Number((args[0]*2));
+                                                fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
+                                                    if (err) console.error(err);
+                                                });
+                                            }
+                                        })
+                                    } else {
+                                        moneydata[msg.author.id].money += Number((args[0]*2));
+                                        fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
+                                            if (err) console.error(err);
+                                        });
+                                    }
+                                })
+                            } else {
+                                moneydata[msg.author.id].money += Number((args[0]*2));
+                                fs.writeFile('storage/moneydata.json', JSON.stringify(moneydata), (err) => {
+                                    if (err) console.error(err);
+                                });
+                            }
+                        })    
+                        
+                    }
+
                 } else {
                     msg.channel.send({embed:{
                         title:"error",
@@ -504,7 +750,29 @@ client.on('message', (msg) => {
                 }
     
             }
+        }
 
+        if (msg.content === (prefix + 'testawait')) {
+            const filter = m => m.author.id === msg.author.id;
+            msg.reply("Please write something for test... Will expire in 10 seconds").then(r => r.delete({timeout: 20000}));
+            msg.channel.awaitMessages(filter, {
+                max: 1,
+                time: 10000
+            }).then(collected => {
+                if(collected.first().content === 'cancel'){
+                    return msg.reply('Canceled')
+                }
+                let napisal_test = collected.first().content
+                const embed = new Discord.MessageEmbed()
+                .setDescription(`${napisal_test} - you wrote`)
+                .setTimestamp()
+                .setFooter(client.user.username, client.user.displayAvatarURL())
+                .setColor('#fed9f3')
+                return msg.channel.send(embed)
+            })
+        }
+    
+        
 });
 
 client.login(token);

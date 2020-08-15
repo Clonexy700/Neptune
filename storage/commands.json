@@ -83,6 +83,12 @@
         "desc": "Returns let me google this for you link",
         "usage": "lmgtfy <question>"
     },
+    "Urban": {
+        "name": "Urban",
+        "group": "Information",
+        "desc": "Returns the word meaning from urbandictionary",
+        "usage": "urban <word>"
+    },
     "Alicard": {
         "name": "Alicard",
         "group": "Fun",
@@ -148,6 +154,12 @@
         "group": "Games",
         "desc": "Flip the coin and get money or loose them!",
         "usage": "wheel <bet> <side[heads/tails/h/t]>"
+    },
+    "Guessnum": {
+        "name": "Guessnum",
+        "group": "Games",
+        "desc": "Guess the number and win credits!",
+        "usage": "guessnum <bet>"
     },
     "Hug": {
         "name": "Hug",
