@@ -190,5 +190,11 @@
         "group": "Emotions",
         "desc": "Sends crying emotion",
         "usage": "cry"
+    },
+    "Dance": {
+        "name": "Dance",
+        "group": "Emotions",
+        "desc": "Sends dancing emotion",
+        "usage": "dance"
     }
 }
