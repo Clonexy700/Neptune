@@ -153,7 +153,7 @@
         "name": "Coin",
         "group": "Games",
         "desc": "Flip the coin and get money or loose them!",
-        "usage": "wheel <bet> <side[heads/tails/h/t]>"
+        "usage": "coin <bet> <side[heads/tails/h/t]>"
     },
     "Guessnum": {
         "name": "Guessnum",
@@ -202,5 +202,41 @@
         "group": "Emotions",
         "desc": "Sends greeting emotion",
         "usage": "greet [@user] [message]"
+    },
+    "Bite": {
+        "name": "Bite",
+        "group": "Emotions",
+        "desc": "Sends biting emotion",
+        "usage": "bite [@user] [message]"
+    },
+    "Facepalm": {
+        "name": "Facepalm",
+        "group": "Emotions",
+        "desc": "Sends facepalming emotion",
+        "usage": "facepalm"
+    },
+    "Lick": {
+        "name": "Lick",
+        "group": "Emotions",
+        "desc": "Sends licking emotion",
+        "usage": "lick [@user] [message]"
+    },
+    "Poke": {
+        "name": "Poke",
+        "group": "Emotions",
+        "desc": "Sends poke emotion",
+        "usage": "poke [@user] [message]"
+    },
+    "Tickle": {
+        "name": "Tickle",
+        "group": "Emotions",
+        "desc": "Sends poke emotion",
+        "usage": "poke [@user] [message]"
+    },
+    "Yandere": {
+        "name": "Yandere",
+        "group": "Emotions",
+        "desc": "Sends yandere emotion",
+        "usage": "yandere"
     }
 }
