@@ -28,9 +28,7 @@ fs.readdir('./commands/', (err, files) => {
 
 }
 
-let configuration = require('./config.json'); 
-
-let token = configuration.token;
+let token = process.env.token
 
 const actvs = [
     "nep help",
@@ -104,7 +102,7 @@ client.on('message', (msg) => {
     let prefixes = JSON.parse(fs.readFileSync("storage/guildprefix.json", 'utf-8'));
     if (!prefixes[msg.guild.id]){
         prefixes[msg.guild.id] = {
-            prefixes: configuration.prefix
+            prefixes: process.env.prefix
         };
     }
 
