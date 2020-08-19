@@ -196,5 +196,11 @@
         "group": "Emotions",
         "desc": "Sends dancing emotion",
         "usage": "dance"
+    },
+    "Greet": {
+        "name": "Greet",
+        "group": "Emotions",
+        "desc": "Sends greeting emotion",
+        "usage": "greet [@user] [message]"
     }
 }
