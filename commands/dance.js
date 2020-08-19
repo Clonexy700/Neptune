@@ -10,7 +10,7 @@ function randomgif() {
 }
 module.exports.run = async(client, msg, args) => {
     const embed = new Discord.MessageEmbed()
-    .addField('Crying', `${msg.author} ✧ is dancing`)
+    .addField('Dancing', `${msg.author} ✧ is dancing`)
     .setImage(randomgif())
     .setFooter('(￣▽￣)/♫•*¨*•.¸¸♪')
     .setColor('#fed9f3')

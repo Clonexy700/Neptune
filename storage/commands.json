@@ -101,6 +101,12 @@
         "desc": "Sends AmiyaCarrot gif",
         "usage": "carrot"
     },
+    "Catjam": {
+        "name": "Catjam",
+        "group": "Fun",
+        "desc": "Sends catjam gif",
+        "usage": "catjam"
+    },
     "Meme": {
         "name": "Meme",
         "group": "Fun",
@@ -231,12 +237,18 @@
         "name": "Tickle",
         "group": "Emotions",
         "desc": "Sends poke emotion",
-        "usage": "poke [@user] [message]"
+        "usage": "tickle [@user] [message]"
     },
     "Yandere": {
         "name": "Yandere",
         "group": "Emotions",
         "desc": "Sends yandere emotion",
         "usage": "yandere"
+    },
+    "Punch": {
+        "name": "Punch",
+        "group": "Emotions",
+        "desc": "Sends punch emotion",
+        "usage": "punch [@user] [message]"
     }
 }
