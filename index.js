@@ -30,7 +30,7 @@ fs.readdir('./commands/', (err, files) => {
 
 let configuration = require('./config.json'); 
 
-let token = process.env.token;
+let token = 'NzQwNzk0ODU5ODMyNDc1NjY4.XyuM-Q.CAioUXJevH5LMK5W-6RsQ5HNdi8';
 
 const actvs = [
     "nep help",
